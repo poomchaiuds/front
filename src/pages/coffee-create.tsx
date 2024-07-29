@@ -27,7 +27,7 @@ export default function CoffeeCreatePage() {
   const handleSubmit = async (values: typeof coffeeCreateForm.values) => {
     try {
       setIsProcessing(true);
-      const response = await axios.post<Coffee>(`/coffees`, values); 
+      
       notifications.show({
         title: "เพิ่มข้อมูลหนังสือสำเร็จ",
         message: "ข้อมูลหนังสือได้รับการเพิ่มเรียบร้อยแล้ว",
