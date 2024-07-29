@@ -23,12 +23,13 @@ export default function OrderCreatePage() {
   const handleSubmit = async (values: typeof orderCreateForm.values) => {
     try {
       setIsProcessing(true);
+      const response = await axios.post<Order>(`/makeorders`, values); 
       notifications.show({
         title: "เพิ่มสั่งอาหารสำเร็จ",
         message: "รอกินเลยจู้",
         color: "teal",
       });
-      navigate(`/orders`);
+      navigate(`/orders/${response.data.id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 422) {
