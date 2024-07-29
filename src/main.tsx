@@ -10,10 +10,15 @@ import axios from "axios";
 import HomePage from "./pages";
 import { Notifications } from "@mantine/notifications";
 import BooksPage from "./pages/books";
+import CoffeesPages from "./pages/coffees";
+import OrdersPages from "./pages/orders";
 import BookByIdPage from "./pages/book-by-id";
+import CoffeeByIdPage from "./pages/coffee-by-id"
 import BookEditById from "./pages/book-edit-by-id";
 import { ModalsProvider } from "@mantine/modals";
 import BookCreatePage from "./pages/book-create";
+import CoffeeCreatePage from "./pages/coffee-create";
+import MakeOrdersPages from "./pages/makeorder";
 
 const theme = createTheme({
   primaryColor: "orange",
@@ -30,12 +35,32 @@ const router = createBrowserRouter([
     element: <BooksPage />,
   },
   {
+    path: "/coffees",
+    element: <CoffeesPages />,
+  },
+  {
+    path: "/orders",
+    element: <OrdersPages />,
+  },
+  {
+    path: "/makeorders",
+    element: <MakeOrdersPages />,
+  },
+  {
     path: "/books/create",
     element: <BookCreatePage />,
   },
   {
+    path: "/coffees/create",
+    element: <CoffeeCreatePage />,
+  },
+  {
     path: "/books/:bookId",
     element: <BookByIdPage />,
+  },
+  {
+    path: "/coffees/:coffeeId",
+    element: <CoffeeByIdPage />,
   },
   {
     path: "/books/:bookId/edit",
