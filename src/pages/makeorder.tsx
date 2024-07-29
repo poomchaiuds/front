@@ -1,39 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import { Button, Container, NumberInput, TextInput } from "@mantine/core";
-import { isNotEmpty, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { notifications } from "@mantine/notifications";
-import { Coffee } from "../lib/models";
+import { Order } from "../lib/models";
 
-export default function CoffeeCreatePage() {
+export default function OrderCreatePage() {
   const navigate = useNavigate();
 
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const coffeeCreateForm = useForm({
+  const orderCreateForm = useForm({
     initialValues: {
-      c_title: "",
-      c_price:0
-    },
-
-    validate: {
-      c_title: isNotEmpty("กรุณาระบุชื่อหนังสือ"),
-      c_price: isNotEmpty("กรุณาระบุชื่อผู้แต่ง"),
-    },
+      menu: "",
+      total:0,
+      note: ""
+    }
   });
 
-  const handleSubmit = async (values: typeof coffeeCreateForm.values) => {
+  const handleSubmit = async (values: typeof orderCreateForm.values) => {
     try {
       setIsProcessing(true);
-      const response = await axios.post<Coffee>(`/coffees`, values); 
+      const response = await axios.post<Order>(`/makeorders`, values); 
       notifications.show({
-        title: "เพิ่มข้อมูลหนังสือสำเร็จ",
-        message: "ข้อมูลหนังสือได้รับการเพิ่มเรียบร้อยแล้ว",
+        title: "เพิ่มสั่งอาหารสำเร็จ",
+        message: "รอกินเลยจู้",
         color: "teal",
       });
-      navigate(`/coffees`);
+      navigate(`/orders`);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 422) {
@@ -65,19 +61,25 @@ export default function CoffeeCreatePage() {
     <>
       <Layout>
         <Container className="mt-8">
-          <h1 className="text-xl">เพิ่มเมนูในระบบ</h1>
+          <h1 className="text-xl">สั่งอาหารเลย</h1>
 
-          <form onSubmit={coffeeCreateForm.onSubmit(handleSubmit)} className="space-y-8">
+          <form onSubmit={orderCreateForm.onSubmit(handleSubmit)} className="space-y-8">
             <TextInput
               label="ชื่อเมนู"
               placeholder="ชื่อเมนู"
-              {...coffeeCreateForm.getInputProps("c_title")}
+              {...orderCreateForm.getInputProps("menu")}
             />
 
             <NumberInput
-              label="ราคา"
-              placeholder="ราคา"
-              {...coffeeCreateForm.getInputProps("c_price")}
+              label="จำนวน(แก้ว)"
+              placeholder="จำนวน(แก้ว)"
+              {...orderCreateForm.getInputProps("total")}
+            />
+
+            <TextInput
+              label="หมายเหตุ"
+              placeholder="หมายเหตุ"
+              {...orderCreateForm.getInputProps("note")}
             />
 
             <Button type="submit" loading={isProcessing}>
